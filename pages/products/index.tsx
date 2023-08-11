@@ -17,6 +17,7 @@ const ProductsPage: NextPage<{ data: Product[] }> = (props) => {
       .then((data) => data.json())
       .then((_response) => {
         const response = _response as GetProductsResponse;
+        console.log(response);
         setProducts(response.products);
         setCurrentPage(response.page);
         setTotalPages(response.pages);

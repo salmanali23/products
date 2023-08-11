@@ -59,13 +59,22 @@ const productsIndex: NextApiHandler = async (req, res) => {
   // Query params
   const query = req.query;
 
-  const result = (await db.query('SELECT * FROM "product"')) as Product[];
+  const {page, take} = query;
+
+  const offset = (page - 1 ) * take;
+
+  const result = (await db.query(`SELECT * FROM "product" LIMIT ${take} OFFSET ${offset}`)) as Product[];
+
+  const totalResult = await db.query('SELECT COUNT(*) from "product"');
+  const totalCount = parseInt(totalResult[0].count);
+
+  const totalPages = Math.ceil(totalCount / take);
   const response: GetProductsResponse = {
-    page: 1,
-    take: result.length,
-    count: result.length,
-    totalCount: result.length,
-    pages: 1,
+    page: parseInt(page),
+    take: parseInt(take),
+    count: take,
+    totalCount: totalCount,
+    pages: totalPages,
     products: result,
   };
   res.status(200).json(response);
