@@ -6,7 +6,7 @@ export interface Review {
   productId: string;
   rating: number;
   comment: string;
-  createdAt: Date;
+  timestamp: Date;
 }
 
 /**
@@ -54,7 +54,46 @@ interface GetReviewsResponse {
 }
 
 const reviewEndpointHandler: NextApiHandler = async (req, res) => {
-  res.status(405).end();
+  if (req.method === "GET") {
+    const query = req.query;
+    const { productId } : GetReviewsQuery  = query;
+    const result = (await db.query(`SELECT * FROM "review" where product_id = ${productId}`)) as Review[];
+    const response: GetReviewsResponse = {
+      success:true,
+      reviews: result,
+    };
+
+    res.status(200).json(response);
+  }
+  else if (req.method === "POST") {
+
+    const {productId, rating, comment} : CreateReviewData = req.body;
+    const ratingNumber = parseInt(String(rating))
+
+    if(!comment){
+      return res.status(400).json({error: "Empty Review"});
+    }
+
+    console.log(rating, res);
+    if( Number.isNaN(ratingNumber) ||!ratingNumber || ratingNumber < 1 || ratingNumber > 5 ){
+      return res.status(400).json({error: "Invalid Rating"});
+    }
+    if(!productId){
+      return res.status(400).json({error: "Invalid Product"});
+    }
+
+    const result = await db.query(`INSERT INTO review (comment, rating, product_id) values ('${comment}' , ${ratingNumber}, ${productId}) RETURNING *`)
+    console.log( "Result",result)
+    const response: CreateReviewResponse = {
+      success:true,
+      review: result[0],
+    };
+    res.status(200).json(response);
+  }
+
+  else{
+    return res.status(405).end();
+  }
 };
 
 export default reviewEndpointHandler;

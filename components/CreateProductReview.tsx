@@ -23,7 +23,7 @@ const CreateProductReview = ({
 
     fetch(`/api/review`, {
       method: "POST",
-      body: JSON.stringify({ review, rating, productId }),
+      body: JSON.stringify({ comment:review, rating, productId }),
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())

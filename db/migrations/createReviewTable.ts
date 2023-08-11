@@ -4,11 +4,11 @@ import db from "../db";
 const createReviewTableQuery = `
   CREATE TABLE IF NOT EXISTS review(
     id SERIAL PRIMARY KEY,
-    product_id INT NOT NULL,
+    productId INT NOT NULL,
     rating INT CHECK (rating >= 1 AND rating <= 5),
-    timestamp TIMESTAMPTZ DEFAULT NOW(),
+    created_at TIMESTAMPTZ DEFAULT NOW(),
     comment TEXT,
-    FOREIGN KEY (product_id) REFERENCES product (id)
+    FOREIGN KEY (productId) REFERENCES product (id)
   )
 `;
 

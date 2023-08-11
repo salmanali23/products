@@ -6,7 +6,7 @@ interface Props {
 }
 
 const Review = ({ review }: Props) => {
-  debugger;
+  console.log(review)
   return (
     <div
       style={{
@@ -27,7 +27,7 @@ const Review = ({ review }: Props) => {
         }}
       >
         <StarRating editable={false} rating={review.rating} />
-        <span>{new Date(review.createdAt).toISOString()}</span>
+        <span>{new Date(review.timestamp).toISOString()}</span>
       </div>
       <p>{review.comment}</p>
     </div>
