@@ -20,12 +20,6 @@ yarn
 yarn dev
 ```
 
-## Resources
-- ✅ Searching the internet for answers (Stackoverflow, Google)
-- ❌ Github Copilot (please turn this off in your IDE)
-- ❌ Any AI based code generation tool
-
-## Assignment
 ### Understanding
 1. Run the sample application.
 2. Click the example button on the home page and read through the documentation.
